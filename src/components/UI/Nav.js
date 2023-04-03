@@ -17,7 +17,7 @@ const Nav = (props) => {
     return (
         <ul className={classes.nav}>
             <li onClick={navClickHandler}>Home</li>
-            <li onClick={navClickHandler}>My To Do Listtt</li>
+            <li onClick={navClickHandler}>My To Do List</li>
             <li onClick={navClickHandler}>Create New Task</li>
             <li onClick={navClickHandler}>View Task Detail</li>
             <li onClick={navClickHandler}>Sign Up</li>
