@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "./App.css";
 import Home from "./components/Home/Home";
 import MyToDoList from "./components/MyToDoList/MyToDoList";
@@ -8,7 +8,7 @@ import Nav from "./components/UI/Nav";
 
 function App() {
   const [pageName, setPageName] = useState('Home');
-  const ctx = useContext(PageContext);
+//   const ctx = useContext(PageContext);
 
   const pageChangeHandler = (name) => {
     setPageName(name);
