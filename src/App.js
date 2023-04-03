@@ -7,7 +7,7 @@ import Nav from "./components/UI/Nav";
 
 function App() {
   const [pageName, setPageName] = useState('Home');
-//   const ctx = useContext(PageContext);
+//   const ctx = useContext(PageContext); 
 
   const pageChangeHandler = (name) => {
     setPageName(name);
