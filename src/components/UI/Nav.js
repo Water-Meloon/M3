@@ -1,6 +1,5 @@
 
-import React, { useContext } from 'react';
-import PageContext from '../store/page-context';
+import React from 'react';
 import classes from './Nav.module.css';
 
 const Nav = (props) => {
