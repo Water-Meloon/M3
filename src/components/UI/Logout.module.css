@@ -1,0 +1,23 @@
+.button {
+    width: 125px;
+    height: 60px;
+    border: none;
+    font-size: 1.4rem;
+    border-radius: 40px;
+    background-color: rgb(58, 143, 255);
+    color: white;
+    box-shadow: 0px 0px 30px #000;
+    -moz-box-shadow: 0px 0px 30px #000;
+    -webkit-box-shadow: 0px 0px 30px #0000002e;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: rgba(58, 143, 255, 0.757);
+}
+
+.buttonCont {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}

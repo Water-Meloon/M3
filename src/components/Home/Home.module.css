@@ -1,0 +1,15 @@
+h1 {
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+}
+.p {
+    width: 500px;
+    max-width: 100%;
+    margin: 0 auto;
+    font-size: 2rem;
+}
+
+.cont {
+    padding: 20px;
+}
