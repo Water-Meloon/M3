@@ -1,8 +1,7 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import Home from "./components/Home/Home";
 import MyToDoList from "./components/MyToDoList/MyToDoList";
-import PageContext from "./components/store/page-context";
 import Header from "./components/UI/Header";
 import Nav from "./components/UI/Nav";
 
