@@ -31,14 +31,6 @@ const Login = (props) => {
 
   const [formIsValid, setFormIsValid] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn);
-//   useEffect(() => {
-//     const loginInfo = localStorage.getItem("isLoggedIn");
-
-//     if (loginInfo === "1") {
-//       setIsLoggedIn(true);
-//     }
-//   }, []);
 
   const usernameChangeHandler = (event) => {
     dispatchUserName({ type: "USER_INPUT", val: event.target.value });
@@ -46,7 +38,7 @@ const Login = (props) => {
       passwordState.isValid && event.target.value.trim().length > 4
     );
   };
-  
+
   const validateUsername = () => {
     dispatchUserName({ type: "INPUT_BLUR" });
   };
@@ -64,7 +56,6 @@ const Login = (props) => {
     event.preventDefault();
     if (formIsValid) {
       localStorage.setItem("isLoggedIn", "1");
-      setIsLoggedIn(true);
       setShowError(false);
       props.login();
     } else {
@@ -72,38 +63,35 @@ const Login = (props) => {
     }
   };
 
-  console.log(isLoggedIn);
   return (
     <>
-      {!isLoggedIn && (
-        <form className={classes.form} onSubmit={submitHandler}>
-          <div className={classes.inputCont}>
-            <input
-              placeholder="Username"
-              className={classes.input}
-              onChange={usernameChangeHandler}
-              onBlur={validateUsername}
-              value={userNameState.value}
-            ></input>
-            <input
-              placeholder="Password"
-              className={classes.input}
-              onChange={passwordChangeHandler}
-              onBlur={validatePassword}
-              value={passwordState.value}
-            ></input>
-          </div>
-          {showError && (
-            <p className={classes.p}>
-              Invalid Input. Username must be at least characters 4 and Password
-              must be at least 6 characters
-            </p>
-          )}
-          <div className={classes.buttonCont}>
-            <button className={classes.button}>Login</button>
-          </div>
-        </form>
-      )}
+      <form className={classes.form} onSubmit={submitHandler}>
+        <div className={classes.inputCont}>
+          <input
+            placeholder="Username"
+            className={classes.input}
+            onChange={usernameChangeHandler}
+            onBlur={validateUsername}
+            value={userNameState.value}
+          ></input>
+          <input
+            placeholder="Password"
+            className={classes.input}
+            onChange={passwordChangeHandler}
+            onBlur={validatePassword}
+            value={passwordState.value}
+          ></input>
+        </div>
+        {showError && (
+          <p className={classes.p}>
+            Invalid Input. Username must be at least characters 4 and Password
+            must be at least 6 characters
+          </p>
+        )}
+        <div className={classes.buttonCont}>
+          <button className={classes.button}>Login</button>
+        </div>
+      </form>
     </>
   );
 };
