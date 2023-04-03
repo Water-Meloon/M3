@@ -1,12 +1,12 @@
 
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import PageContext from '../store/page-context';
 import classes from './Nav.module.css';
 
 const Nav = (props) => {
     // const [currentPage, setCurrentPage] = useState('Home');
 
-    const ctx = useContext(PageContext);
+//     const ctx = useContext(PageContext);
     const navClickHandler = (event) => {
         // console.log(event.target.textContent);
         // setCurrentPage(event.target.textContent)
