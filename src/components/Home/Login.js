@@ -1,5 +1,5 @@
 import classes from "./Login.module.css";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useReducer, useState } from "react";
 const Login = (props) => {
   const userNameReducer = (state, action) => {
     if (action.type === "USER_INPUT") {
