@@ -51,7 +51,7 @@ function App() {
         {pageName === "My To Do List" && <MyToDoList />}
         {pageName === "Create New Task" && <CreateNewTask />}
         {pageName === "View Task Detail" && <ViewTaskDetail />}
-        {pageName === "Sign Up" && <SignUp />}
+        {pageName === "Sign Up" && <SignUp isLoggedIn={isLoggedIn} login={loginHandler} changePage={pageChangeHandler}/>}
         {isLoggedIn && <Logout logout={logoutHandler} />}
       </Card>
       <Footer />

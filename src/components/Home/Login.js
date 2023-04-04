@@ -89,7 +89,7 @@ const Login = (props) => {
           </p>
         )}
         <div className={classes.buttonCont}>
-          <button className={classes.button}>Login</button>
+          <button className={classes.button}>{props.type}</button>
         </div>
       </form>
     </>
