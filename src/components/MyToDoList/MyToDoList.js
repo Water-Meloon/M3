@@ -1,7 +1,8 @@
-import Task from "../Classes/Task";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import classes from "./MyToDoList.module.css";
+import TaskList from "./TaskList";
 
-const tasks = [
+const initialTasks = [
   {
     key: "t1",
     name: "Groceries",
@@ -13,14 +14,13 @@ const tasks = [
     key: "t2",
     name: "Groceries",
     topic: "Shopping",
-    dueDate: "04/16/2023",
+    dueDate: "08/16/2023",
     taskStatus: "incomplete",
   },
 ];
 
 const MyToDoList = () => {
-  console.log(typeof tasks);
-  const [data, setData] = useState(tasks);
+  const [data, setData] = useState(initialTasks);
 
   // FIX
   //   useEffect(() => {
@@ -29,14 +29,12 @@ const MyToDoList = () => {
   //       .then((data) => setData(data.message))
   //       .catch((error) => console.log(error));
   //   }, []);
-  console.log(typeof data);
+//   console.log(typeof data);
   //
 
   return (
     <div>
-      {data.map((element) => (
-        <div>{element.name}</div>
-      ))}
+        <TaskList data={data}/>
     </div>
   );
 };

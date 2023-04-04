@@ -51,3 +51,5 @@ class Task {
         this._taskStatus = value;
     }
 }
+
+export default Task;
