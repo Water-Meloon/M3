@@ -4,7 +4,7 @@ const TaskItem = (props) => {
 
     return (
         <div className={classes.task}>
-
+            {props.name}
         </div>
     )
 };

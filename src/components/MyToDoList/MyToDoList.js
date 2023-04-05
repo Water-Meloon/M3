@@ -1,40 +1,20 @@
-import React, { useState } from "react";
-import classes from "./MyToDoList.module.css";
+import React, { useState, useEffect } from "react";
 import TaskList from "./TaskList";
 
-const initialTasks = [
-  {
-    key: "t1",
-    name: "Groceries",
-    topic: "Shopping",
-    dueDate: "04/16/2023",
-    taskStatus: "incomplete",
-  },
-  {
-    key: "t2",
-    name: "Groceries",
-    topic: "Shopping",
-    dueDate: "08/16/2023",
-    taskStatus: "incomplete",
-  },
-];
-
 const MyToDoList = () => {
-  const [data, setData] = useState(initialTasks);
+  //   const [data, setData] = useState(initialTasks);
+  const [data, setData] = useState();
 
-  // FIX
-  //   useEffect(() => {
-  //     fetch('../data/tasks.json')
-  //       .then((response) => response.json())
-  //       .then((data) => setData(data.message))
-  //       .catch((error) => console.log(error));
-  //   }, []);
-//   console.log(typeof data);
-  //
-
+  useEffect(() => {
+    fetch("./data/tasks.json")
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error(error));
+  }, []);
+  console.log(data);
   return (
     <div>
-        <TaskList data={data}/>
+      {data && <TaskList data={data} />}
     </div>
   );
 };
