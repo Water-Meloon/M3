@@ -19,6 +19,15 @@ function App() {
   const [pageName, setPageName] = useState("Home");
   //   const ctx = useContext(PageContext);
 
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    fetch("./tasks.json")
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error(error));
+  }, []);
+
   const pageChangeHandler = (name) => {
     setPageName(name);
   };
@@ -44,6 +53,17 @@ function App() {
     setIsLoggedIn(true);
   };
 
+  const deleteTask = (id) => {
+    setData(data.filter((task) => task.id !== id));
+  };
+
+  const addTaskHandler=(formData)=>{
+    setData(prevData=>{
+      return [formData,...prevData];
+    })
+  }
+
+  console.log(localStorage.getItem("isLoggedIn"));
   return (
     <div className={classes.wrapper}>
       <Header pageName={pageName} />
@@ -52,10 +72,11 @@ function App() {
         {pageName === "Home" && (
           <Home isLoggedIn={isLoggedIn} login={loginHandler} />
         )}
-        {pageName === "My To Do List" && <MyToDoList />}
-        {pageName === "Create New Task" && <CreateNewTask />}
+        {pageName === "My To Do List" && data&&<MyToDoList tasks = {data} deleteHandler={deleteTask}/>}
+        {pageName === "Create New Task" && <CreateNewTask addTask={addTaskHandler}/>}
         {pageName === "View Task Detail" && <ViewTaskDetail />}
         {pageName === "Sign Up" && <SignUp isLoggedIn={isLoggedIn} login={loginHandler} changePage={pageChangeHandler}/>}
+        {isLoggedIn && <div>{localStorage.getItem("username")}</div>}
         {isLoggedIn && <Logout logout={logoutHandler} />}
       </Card>
       <Footer />

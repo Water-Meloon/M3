@@ -1,15 +1,24 @@
 import classes from "./Login.module.css";
 import React, { useReducer, useState } from "react";
-// import {auth} from "../firebase-config.js"
+import {auth,provider} from "../../firebase-config.js";
+import {signInWithEmailAndPassword} from "firebase/auth"
 
 const Login = (props) => {
   const userNameReducer = (state, action) => {
     if (action.type === "USER_INPUT") {
-      return { value: action.val, isValid: action.val.trim().length > 4 };
+      return { 
+        value: action.val, 
+        isValid: action.val.trim().length > 4, 
+        //error: action.val.trim().length <= 4 ? "Username must be at least 5 characters" : "",
+      };
     } else if (action.type === "INPUT_BLUR") {
-      return { value: state.value, isValid: state.value.trim().length > 4 };
+      return { 
+        value: state.value, 
+        isValid: state.value.trim().length > 4,
+        //error: state.value.trim().length <= 4 ? "Username must be at least 5 characters" : "",
+      };
     }
-    return { value: "", isValid: false };
+    return { value: "", isValid: false};
   };
 
   const [userNameState, dispatchUserName] = useReducer(userNameReducer, {
@@ -19,11 +28,19 @@ const Login = (props) => {
 
   const passwordReducer = (state, action) => {
     if (action.type === "USER_INPUT") {
-      return { value: action.val, isValid: action.val.trim().length > 6 };
+      return { 
+        value: action.val, 
+        isValid: action.val.trim().length > 6,
+        //error: action.val.trim().length <= 6 ? "Password must be at least 7 characters" : "",
+      };
     } else if (action.type === "INPUT_BLUR") {
-      return { value: state.value, isValid: state.value.trim().length > 6 };
+      return { 
+        value: state.value, 
+        isValid: state.value.trim().length > 6,
+        //error: state.value.trim().length <= 6 ? "Password must be at least 7 characters" : "",
+      };
     }
-    return { value: "", isValid: false };
+    return { value: "", isValid: false};
   };
 
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
@@ -33,12 +50,14 @@ const Login = (props) => {
 
   const [formIsValid, setFormIsValid] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [errorMsg,setErrorMsg]=useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
 
   const usernameChangeHandler = (event) => {
     dispatchUserName({ type: "USER_INPUT", val: event.target.value });
-    setFormIsValid(
-      passwordState.isValid && event.target.value.trim().length > 4
-    );
+    setFormIsValid(passwordState.isValid && event.target.value.trim().length > 4);
+    //setUsernameError(event.target.value.trim().length <= 4 ? "Username must be at least 5 characters" : "");
   };
 
   const validateUsername = () => {
@@ -47,9 +66,8 @@ const Login = (props) => {
 
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
-    setFormIsValid(
-      userNameState.isValid && event.target.value.trim().length > 6
-    );
+    setFormIsValid(userNameState.isValid && event.target.value.trim().length > 6);
+    //setPasswordError(event.target.value.trim().length <= 6 ? "Password must be at least 7 characters" : "");
   };
   const validatePassword = () => {
     dispatchPassword({ type: "INPUT_BLUR" });
@@ -57,13 +75,75 @@ const Login = (props) => {
   const submitHandler = (event) => {
     event.preventDefault();
     if (formIsValid) {
-      localStorage.setItem("isLoggedIn", "1");
-      setShowError(false);
-      props.login();
+      signInWithEmailAndPassword(auth, userNameState.value, passwordState.value)
+        .then(() => {
+          localStorage.setItem("isLoggedIn", "1");
+          //console.log(localStorage.getItem("isLoggedIn"))
+          localStorage.setItem("username", userNameState.value);
+          // console.log(localStorage.getItem("username"));
+          setShowError(false);
+          props.login();
+          
+        })
+        .catch((error) => {
+          setShowError(true);
+          console.error(error);
+          if (
+            error.code === "auth/wrong-password" ||
+            error.code === "auth/user-not-found" ||
+            error.code === "auth/invalid-email"
+          ) {
+            setErrorMsg("Incorrect email address or password");
+          } else {
+            setErrorMsg("An error occurred, please try again later");
+          }
+        });
     } else {
       setShowError(true);
+      setUsernameError(
+        userNameState.value.trim().length <= 4
+          ? "Username must be at least 5 characters"
+          : ""
+      );
+      setPasswordError(
+        passwordState.value.trim().length <= 6
+          ? "Password must be at least 7 characters"
+          : ""
+      );
     }
   };
+  
+  // const logoutHandler = () => {
+  //   localStorage.removeItem("isLoggedIn");
+  //   console.log(localStorage.getItem("isLoggedIn"));
+  //   localStorage.removeItem("username");
+  //   props.logout();
+  // };
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+    // redirect to login page
+  };
+
+  const loggedInContent = (
+    <div>
+      <p className={classes.username}>
+        Welcome, {localStorage.getItem("username")}!
+      </p>
+      <p>isLoggedIn value: {localStorage.getItem("isLoggedIn")}</p>
+      <p>username value: {localStorage.getItem("username")}</p>
+      {/* <button onClick={handleLogout}>Logout</button> */}
+    </div>
+  );
+
+  const loginForm = (
+    <>
+      <form className={classes.form} onSubmit={submitHandler}>
+        {/* ... (rest of the form) */}
+      </form>
+    </>
+  );
+ 
 
   return (
     <>
@@ -76,26 +156,44 @@ const Login = (props) => {
             onBlur={validateUsername}
             value={userNameState.value}
           ></input>
+          {usernameError && <p className={classes.error}>{usernameError}</p>}
           <input
             placeholder="Password"
+            type="password"
             className={classes.input}
             onChange={passwordChangeHandler}
             onBlur={validatePassword}
             value={passwordState.value}
           ></input>
+          {passwordError && <p className={classes.error}>{passwordError}</p>}
         </div>
-        {showError && (
+        {/* {showError && (
           <p className={classes.p}>
-            Invalid Input. Username must be at least characters 4 and Password
+            Invalid Input. Username must be at least 4 characters and Password
             must be at least 6 characters
           </p>
-        )}
+        )} */}
+
+        {errorMsg && <p className={classes.error}>{errorMsg}</p>}
         <div className={classes.buttonCont}>
-          <button className={classes.button}>{props.type}</button>
-        </div>
+  <button className={classes.button}>{props.type}</button>
+  {localStorage.getItem("isLoggedIn") === "1" && (
+    <div>
+      <p className={classes.username}>
+        Welcome, {localStorage.getItem("username")}!
+      </p>
+      <p>isLoggedIn value: {localStorage.getItem("isLoggedIn")}</p>
+      <p>username value: {localStorage.getItem("username")}</p>
+      {/* <button onClick={handleLogout}>Logout</button> */}
+      
+    </div>
+  )}
+</div>
+
       </form>
     </>
   );
+  
 };
 
 export default Login;

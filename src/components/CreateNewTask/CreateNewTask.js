@@ -43,6 +43,7 @@ import './CreateTask.css';
 
 function CreateNewTask(props) {
   const [formData, setFormData] = useState({
+    id:Math.random(),
     taskName: '',
     category: 'urgent',
     dueDate: '',
@@ -54,17 +55,18 @@ function CreateNewTask(props) {
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+    console.log(formData);
   }
 
-  // const handleFormSubmit = (event) => {
-  //   event.preventDefault();
-  //   props.onAddTask(formData);
-  // }
+  const submitHandler=(event)=>{
+    event.preventDefault();
+    props.addTask(formData);
+  }
 
   return (
     <section className="createTask contact-letter">
       <h1>Create New Task</h1>
-      <form  className="container"> 
+      <form  className="container" onSubmit={submitHandler}> 
         <label htmlFor="taskName">Task Name:</label>
         <input type="text" id="taskName" name="taskName" value={formData.taskName} onChange={handleFormChange} />
         <label htmlFor="category">Category:</label>
@@ -86,7 +88,7 @@ function CreateNewTask(props) {
         <input type="text" id="location" name="location" value={formData.location} onChange={handleFormChange} />
         <label htmlFor="description">Description:</label>
         <textarea id="description" name="description" rows="5" cols="50" style={{verticalAlign: 'top'}} value={formData.description} onChange={handleFormChange} />
-        <input type="submit" value="Create" />
+        <button type="submit">Create</button>
       </form>
     </section>
   );
