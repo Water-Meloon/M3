@@ -6,17 +6,9 @@ import {signInWithEmailAndPassword} from "firebase/auth"
 const Login = (props) => {
   const userNameReducer = (state, action) => {
     if (action.type === "USER_INPUT") {
-      return { 
-        value: action.val, 
-        isValid: action.val.trim().length > 4, 
-        //error: action.val.trim().length <= 4 ? "Username must be at least 5 characters" : "",
-      };
+      return { value: action.val, isValid: action.val.trim().length >= 4 };
     } else if (action.type === "INPUT_BLUR") {
-      return { 
-        value: state.value, 
-        isValid: state.value.trim().length > 4,
-        //error: state.value.trim().length <= 4 ? "Username must be at least 5 characters" : "",
-      };
+      return { value: state.value, isValid: state.value.trim().length >= 4 };
     }
     return { value: "", isValid: false};
   };
@@ -28,17 +20,9 @@ const Login = (props) => {
 
   const passwordReducer = (state, action) => {
     if (action.type === "USER_INPUT") {
-      return { 
-        value: action.val, 
-        isValid: action.val.trim().length > 6,
-        //error: action.val.trim().length <= 6 ? "Password must be at least 7 characters" : "",
-      };
+      return { value: action.val, isValid: action.val.trim().length >= 6 };
     } else if (action.type === "INPUT_BLUR") {
-      return { 
-        value: state.value, 
-        isValid: state.value.trim().length > 6,
-        //error: state.value.trim().length <= 6 ? "Password must be at least 7 characters" : "",
-      };
+      return { value: state.value, isValid: state.value.trim().length >= 6 };
     }
     return { value: "", isValid: false};
   };
@@ -56,8 +40,9 @@ const Login = (props) => {
 
   const usernameChangeHandler = (event) => {
     dispatchUserName({ type: "USER_INPUT", val: event.target.value });
-    setFormIsValid(passwordState.isValid && event.target.value.trim().length > 4);
-    //setUsernameError(event.target.value.trim().length <= 4 ? "Username must be at least 5 characters" : "");
+    setFormIsValid(
+      passwordState.isValid && event.target.value.trim().length >= 4
+    );
   };
 
   const validateUsername = () => {
@@ -66,8 +51,9 @@ const Login = (props) => {
 
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
-    setFormIsValid(userNameState.isValid && event.target.value.trim().length > 6);
-    //setPasswordError(event.target.value.trim().length <= 6 ? "Password must be at least 7 characters" : "");
+    setFormIsValid(
+      userNameState.isValid && event.target.value.trim().length >= 6
+    );
   };
   const validatePassword = () => {
     dispatchPassword({ type: "INPUT_BLUR" });
