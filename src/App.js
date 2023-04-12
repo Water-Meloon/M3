@@ -72,7 +72,7 @@ function App() {
         {pageName === "Home" && (
           <Home isLoggedIn={isLoggedIn} login={loginHandler} />
         )}
-        {pageName === "My To Do List" && data&&<MyToDoList tasks = {data} deleteHandler={deleteTask}/>}
+        {pageName === "My To Do List" && data &&<MyToDoList tasks = {data} deleteHandler={deleteTask}/>}
         {pageName === "Create New Task" && <CreateNewTask addTask={addTaskHandler}/>}
         {pageName === "View Task Detail" && <ViewTaskDetail />}
         {pageName === "Sign Up" && <SignUp isLoggedIn={isLoggedIn} login={loginHandler} changePage={pageChangeHandler}/>}
