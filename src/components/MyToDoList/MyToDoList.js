@@ -1,42 +1,50 @@
-import React, { useState } from "react";
-import classes from "./MyToDoList.module.css";
-import TaskList from "./TaskList";
+import React, { useState } from 'react';
+import './style.css';
 
-const initialTasks = [
-  {
-    key: "t1",
-    name: "Groceries",
-    topic: "Shopping",
-    dueDate: "04/16/2023",
-    taskStatus: "incomplete",
-  },
-  {
-    key: "t2",
-    name: "Groceries",
-    topic: "Shopping",
-    dueDate: "08/16/2023",
-    taskStatus: "incomplete",
-  },
-];
 
-const MyToDoList = () => {
-  const [data, setData] = useState(initialTasks);
+function MyToDoList() {
+  const [tasks, setTasks] = useState([
+    { id: 1, name: "Task 1", category: "urgent", dueDate: "2023-04-05", status: "pending", location: "Home", description: "Task Description" },
+    { id: 2, name: "Task 2", category: "urgent", dueDate: "2023-04-06", status: "pending", location: "Office", description: "Task Description" },
+    { id: 3, name: "Task 3", category: "Not Urgent", dueDate: "2023-04-07", status: "pending", location: "Gym", description: "Task Description" }
+  ]);
 
-  // FIX
-  //   useEffect(() => {
-  //     fetch('../data/tasks.json')
-  //       .then((response) => response.json())
-  //       .then((data) => setData(data.message))
-  //       .catch((error) => console.log(error));
-  //   }, []);
-//   console.log(typeof data);
-  //
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
 
   return (
-    <div>
-        <TaskList data={data}/>
-    </div>
+    <section className="createTask">
+      <h1 className="center-text">My To Do List</h1>
+      <div className="listForm">
+        <h2 className="p-todolist">Urgent:</h2>
+        <div className="task-cards-container">
+          {tasks.filter((task) => task.category === 'urgent').map((task) => (
+            <div className="task-card" key={task.id}>
+              <h3>{task.name}</h3>
+              <p>{task.description}</p>
+              <p>Due Date: {task.dueDate}</p>
+              <p>Location: {task.location}</p>
+              <button onClick={() => deleteTask(task.id)}>Delete</button>
+            </div>
+          ))}
+        </div>
+        <h2 className="p-todolist">Non-Urgent:</h2>
+        <div className="task-cards-container">
+          {tasks.filter((task) => task.category === 'Not Urgent').map((task) => (
+            <div className="task-card" key={task.id}>
+              <h3>{task.name}</h3>
+              <p>{task.description}</p>
+              <p>Due Date: {task.dueDate}</p>
+              <p>Location: {task.location}</p>
+              <button onClick={() => deleteTask(task.id)}>Delete</button>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* <CreateNewTask onAddTask={addTask} /> */}
+    </section>
   );
-};
+}
 
 export default MyToDoList;

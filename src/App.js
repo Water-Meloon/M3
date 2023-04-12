@@ -11,7 +11,11 @@ import Card from "./components/UI/Card";
 import Logout from "./components/UI/Logout";
 import Footer from "./components/UI/Footer";
 
+
 function App() {
+  
+
+
   const [pageName, setPageName] = useState("Home");
   //   const ctx = useContext(PageContext);
 

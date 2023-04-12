@@ -1,5 +1,7 @@
 import classes from "./Login.module.css";
 import React, { useReducer, useState } from "react";
+// import {auth} from "../firebase-config.js"
+
 const Login = (props) => {
   const userNameReducer = (state, action) => {
     if (action.type === "USER_INPUT") {
