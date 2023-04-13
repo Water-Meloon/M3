@@ -51,10 +51,15 @@ const Login = (props) => {
         props.login();
       })
       .catch((error) => {
+      if (error.code === 'auth/popup-closed-by-user') {
+        setShowError(true);
+        setErrorMsg('Sign-in popup was closed. Please try again.');
+      } else {
         setShowError(true);
         console.error(error);
         setErrorMsg('An error occurred, please try again later');
-      })
+      }
+    })
       .finally(() => {
         setIsGoogleSignInLoading(false);
       });
