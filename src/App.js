@@ -10,12 +10,9 @@ import ViewTaskDetail from "./components/ViewTaskDetail/ViewTaskDetail";
 import Card from "./components/UI/Card";
 import Logout from "./components/UI/Logout";
 import Footer from "./components/UI/Footer";
-
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 function App() {
-  
-
-
   const [pageName, setPageName] = useState("Home");
   //   const ctx = useContext(PageContext);
 
@@ -57,30 +54,70 @@ function App() {
     setData(data.filter((task) => task.id !== id));
   };
 
-  const addTaskHandler=(formData)=>{
-    setData(prevData=>{
-      return [formData,...prevData];
-    })
-  }
+  const addTaskHandler = (formData) => {
+    setData((prevData) => {
+      return [formData, ...prevData];
+    });
+  };
 
   console.log(localStorage.getItem("isLoggedIn"));
   return (
-    <div className={classes.wrapper}>
-      <Header pageName={pageName} />
-      <Nav changePage={pageChangeHandler} />
-      <Card>
-        {pageName === "Home" && (
-          <Home isLoggedIn={isLoggedIn} login={loginHandler} />
-        )}
-        {pageName === "My To Do List" && data &&<MyToDoList tasks = {data} deleteHandler={deleteTask}/>}
-        {pageName === "Create New Task" && <CreateNewTask addTask={addTaskHandler}/>}
-        {pageName === "View Task Detail" && <ViewTaskDetail />}
-        {pageName === "Sign Up" && <SignUp isLoggedIn={isLoggedIn} login={loginHandler} changePage={pageChangeHandler}/>}
-        {isLoggedIn && <div>{localStorage.getItem("username")}</div>}
-        {isLoggedIn && <Logout logout={logoutHandler} />}
-      </Card>
-      <Footer />
-    </div>
+    <Router>
+      <div className={classes.wrapper}>
+        <Header pageName={pageName} />
+        <Nav changePage={pageChangeHandler} />
+        <Card>
+          <Routes>
+            <Route
+              path="/"
+              exact
+              element={<Home isLoggedIn={isLoggedIn} login={loginHandler} />}
+            />
+            <Route
+              path="/mytodolist"
+              element={<MyToDoList tasks={data} deleteHandler={deleteTask} />}
+            />
+            <Route
+              path="/createnewtask"
+              element={<CreateNewTask addTask={addTaskHandler} />}
+            />
+            <Route path="/viewtaskdetail" element={<ViewTaskDetail />} />
+            <Route
+              path="/signup"
+              element={
+                <SignUp
+                  isLoggedIn={isLoggedIn}
+                  login={loginHandler}
+                  changePage={pageChangeHandler}
+                />
+              }
+            />
+          </Routes>
+
+          {/* {pageName === "Home" && (
+            <Home isLoggedIn={isLoggedIn} login={loginHandler} />
+          )}
+          
+          {pageName === "My To Do List" && data && (
+            <MyToDoList tasks={data} deleteHandler={deleteTask} />
+          )}
+          {pageName === "Create New Task" && (
+            <CreateNewTask addTask={addTaskHandler} />
+          )}
+          {pageName === "View Task Detail" && <ViewTaskDetail />}
+          {pageName === "Sign Up" && (
+            <SignUp
+              isLoggedIn={isLoggedIn}
+              login={loginHandler}
+              changePage={pageChangeHandler}
+            />
+          )}
+          {isLoggedIn && <div>{localStorage.getItem("username")}</div>} */}
+          {isLoggedIn && <Logout logout={logoutHandler} />}
+        </Card>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
