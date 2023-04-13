@@ -2,6 +2,7 @@ import classes from "./Login.module.css";
 import React, { useReducer, useState } from "react";
 import {auth,provider} from "../../firebase-config.js";
 import {signInWithEmailAndPassword} from "firebase/auth"
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const Login = (props) => {
   const userNameReducer = (state, action) => {
@@ -37,6 +38,23 @@ const Login = (props) => {
   const [errorMsg,setErrorMsg]=useState("");
   const [passwordError, setPasswordError] = useState("");
   const [usernameError, setUsernameError] = useState("");
+  const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false);
+
+  const googleSignIn = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        localStorage.setItem('isLoggedIn', '1');
+        localStorage.setItem('username', user.displayName);
+        setShowError(false);
+        props.login();
+      })
+      .catch((error) => {
+        setShowError(true);
+        console.error(error);
+        setErrorMsg('An error occurred, please try again later');
+      });
+  };
 
   const usernameChangeHandler = (event) => {
     dispatchUserName({ type: "USER_INPUT", val: event.target.value });
@@ -99,36 +117,6 @@ const Login = (props) => {
     }
   };
   
-  // const logoutHandler = () => {
-  //   localStorage.removeItem("isLoggedIn");
-  //   console.log(localStorage.getItem("isLoggedIn"));
-  //   localStorage.removeItem("username");
-  //   props.logout();
-  // };
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
-    // redirect to login page
-  };
-
-  const loggedInContent = (
-    <div>
-      <p className={classes.username}>
-        Welcome, {localStorage.getItem("username")}!
-      </p>
-      <p>isLoggedIn value: {localStorage.getItem("isLoggedIn")}</p>
-      <p>username value: {localStorage.getItem("username")}</p>
-      {/* <button onClick={handleLogout}>Logout</button> */}
-    </div>
-  );
-
-  const loginForm = (
-    <>
-      <form className={classes.form} onSubmit={submitHandler}>
-        {/* ... (rest of the form) */}
-      </form>
-    </>
-  );
  
 
   return (
@@ -153,15 +141,12 @@ const Login = (props) => {
           ></input>
           {passwordError && <p className={classes.error}>{passwordError}</p>}
         </div>
-        {/* {showError && (
-          <p className={classes.p}>
-            Invalid Input. Username must be at least 4 characters and Password
-            must be at least 6 characters
-          </p>
-        )} */}
 
         {errorMsg && <p className={classes.error}>{errorMsg}</p>}
         <div className={classes.buttonCont}>
+          <button className={classes.button} onClick={googleSignIn}disabled={isGoogleSignInLoading}>
+          Sign in with Google
+          </button>
   <button className={classes.button}>{props.type}</button>
   {localStorage.getItem("isLoggedIn") === "1" && (
     <div>
@@ -170,8 +155,6 @@ const Login = (props) => {
       </p>
       <p>isLoggedIn value: {localStorage.getItem("isLoggedIn")}</p>
       <p>username value: {localStorage.getItem("username")}</p>
-      {/* <button onClick={handleLogout}>Logout</button> */}
-      
     </div>
   )}
 </div>
