@@ -93,6 +93,7 @@ function App() {
               }
             />
           </Routes>
+          {isLoggedIn && <Logout logout={logoutHandler} />}
 
           {/* {pageName === "Home" && (
             <Home isLoggedIn={isLoggedIn} login={loginHandler} />
@@ -113,7 +114,7 @@ function App() {
             />
           )}
           {isLoggedIn && <div>{localStorage.getItem("username")}</div>} */}
-          {isLoggedIn && <Logout logout={logoutHandler} />}
+          
         </Card>
         <Footer />
       </div>

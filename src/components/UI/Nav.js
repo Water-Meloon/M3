@@ -6,12 +6,12 @@ const Nav = (props) => {
     // const [currentPage, setCurrentPage] = useState('Home');
 
 //     const ctx = useContext(PageContext);
-    const navClickHandler = (event) => {
-        // console.log(event.target.textContent);
-        // setCurrentPage(event.target.textContent)
-        // console.log(ctx.currentPage);
-        props.changePage(event.target.textContent);
-    }
+    // const navClickHandler = (event) => {
+    //     // console.log(event.target.textContent);
+    //     // setCurrentPage(event.target.textContent)
+    //     // console.log(ctx.currentPage);
+    //     props.changePage(event.target.textContent);
+    // }
 
     // console.log(currentPage);
     return (
