@@ -2,7 +2,7 @@ import classes from "./Login.module.css";
 import React, { useReducer, useState } from "react";
 import {auth,provider} from "../../firebase-config.js";
 import {signInWithEmailAndPassword} from "firebase/auth"
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 
 const Login = (props) => {
   const userNameReducer = (state, action) => {
@@ -34,11 +34,9 @@ const Login = (props) => {
   });
 
   const [formIsValid, setFormIsValid] = useState(false);
-  const [showError, setShowError] = useState(false);
   const [errorMsg,setErrorMsg]=useState("");
   const [passwordError, setPasswordError] = useState("");
   const [usernameError, setUsernameError] = useState("");
-  const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false);
 
   const googleSignIn = () => {
     signInWithPopup(auth, provider)
@@ -46,11 +44,9 @@ const Login = (props) => {
         const user = result.user;
         localStorage.setItem('isLoggedIn', '1');
         localStorage.setItem('username', user.displayName);
-        setShowError(false);
         props.login();
       })
       .catch((error) => {
-        setShowError(true);
         console.error(error);
         setErrorMsg('An error occurred, please try again later');
       });
@@ -85,12 +81,10 @@ const Login = (props) => {
           //console.log(localStorage.getItem("isLoggedIn"))
           localStorage.setItem("username", userNameState.value);
           // console.log(localStorage.getItem("username"));
-          setShowError(false);
           props.login();
           
         })
         .catch((error) => {
-          setShowError(true);
           console.error(error);
           if (
             error.code === "auth/wrong-password" ||
@@ -103,7 +97,6 @@ const Login = (props) => {
           }
         });
     } else {
-      setShowError(true);
       setUsernameError(
         userNameState.value.trim().length <= 4
           ? "Username must be at least 5 characters"
@@ -144,7 +137,7 @@ const Login = (props) => {
 
         {errorMsg && <p className={classes.error}>{errorMsg}</p>}
         <div className={classes.buttonCont}>
-          <button className={classes.button} onClick={googleSignIn}disabled={isGoogleSignInLoading}>
+          <button className={classes.button} onClick={googleSignIn}>
           Sign in with Google
           </button>
   <button className={classes.button}>{props.type}</button>
