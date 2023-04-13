@@ -17,11 +17,11 @@ const Nav = (props) => {
     return (
         <ul className={classes.nav}>
             
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/mytodolist">My To Do List</Link></li>
-            <li><Link to="/createnewtask">Create New Task</Link></li>
-            <li><Link to="/viewtaskdetail">View Task Detail</Link></li>
-            <li><Link to="/signup">Sign Up</Link></li>
+            <Link to="/"><li>Home</li></Link>
+            <Link to="/mytodolist"><li>My To Do List</li></Link>
+            <Link to="/createnewtask"><li>Create New Task</li></Link>
+            <Link to="/viewtaskdetail"><li>View Task Detail</li></Link>
+            <Link to="/signup"><li>Sign Up</li></Link>
             {/* <li onClick={navClickHandler}>Home</li>
             <li onClick={navClickHandler}>My To Do List</li>
             <li onClick={navClickHandler}>Create New Task</li>
