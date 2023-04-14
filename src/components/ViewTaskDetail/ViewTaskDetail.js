@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./ViewTaskDetail.module.css";
 function ViewTaskDetail() {
   return (
-    <div>
+    <div className={classes.wrapper}>
       <h1>Task Detail</h1>
       <h2>Task Name</h2>
       <p>Category: Urgent</p>

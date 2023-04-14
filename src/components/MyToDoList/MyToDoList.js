@@ -29,7 +29,7 @@ function MyToDoList(props) {
                     <span>{task.description}</span>
                     <span>Due: {task.dueDate}</span>
                     <span>Location: {task.location}</span>
-                    <button className={classes.delete} onClick={() => deleteTask(task.id)}>Delete</button>
+                    <button className={classes.delete} onClick={() => deleteTask(task.id)}>X</button>
                   </div>
                 ))}
             </div>
@@ -43,7 +43,7 @@ function MyToDoList(props) {
                     <span>{task.description}</span>
                     <span>Due: {task.dueDate}</span>
                     <span>Location: {task.location}</span>
-                    <button className={classes.delete} onClick={() => deleteTask(task.id)}>Delete</button>
+                    <button className={classes.delete} onClick={() => deleteTask(task.id)}>X</button>
                   </div>
                 ))}
             </div>
