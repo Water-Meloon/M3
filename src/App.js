@@ -93,7 +93,7 @@ function App() {
               }
             />
           </Routes>
-          {isLoggedIn && <div>{localStorage.getItem("username")}</div>}
+          {isLoggedIn && <div className={classes.username}>{localStorage.getItem("username")}</div>}
           {isLoggedIn && <Logout logout={logoutHandler} />}
 
           {/* {pageName === "Home" && (
