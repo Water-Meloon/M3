@@ -37,6 +37,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 50px;
     margin-top: 30px;
 }
 
@@ -69,4 +70,23 @@
 
 .username {
     color: blue;
+}
+
+.googleButton {
+    width: 160px;
+    height: 60px;
+    border: none;
+    font-size: 1.4rem;
+    border-radius: 40px;
+    background-color: rgb(58, 143, 255);
+    color: white;
+    box-shadow: 0px 0px 30px #000;
+    -moz-box-shadow: 0px 0px 30px #000;
+    -webkit-box-shadow: 0px 0px 30px #0000002e;
+    cursor: pointer;
+}
+.googleImg {
+    background-image: url("../../../imgs/Google__G__Logo.jpg");
+    width: 800px;
+    height: 300px;
 }

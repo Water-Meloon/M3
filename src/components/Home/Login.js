@@ -1,8 +1,8 @@
 import classes from "./Login.module.css";
 import React, { useReducer, useState } from "react";
-import {auth,provider} from "../../firebase-config.js";
-import {signInWithEmailAndPassword} from "firebase/auth"
-import { signInWithPopup} from "firebase/auth";
+import { auth, provider } from "../../firebase-config.js";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 
 const Login = (props) => {
   const userNameReducer = (state, action) => {
@@ -11,7 +11,7 @@ const Login = (props) => {
     } else if (action.type === "INPUT_BLUR") {
       return { value: state.value, isValid: state.value.trim().length >= 4 };
     }
-    return { value: "", isValid: false};
+    return { value: "", isValid: false };
   };
 
   const [userNameState, dispatchUserName] = useReducer(userNameReducer, {
@@ -25,7 +25,7 @@ const Login = (props) => {
     } else if (action.type === "INPUT_BLUR") {
       return { value: state.value, isValid: state.value.trim().length >= 6 };
     }
-    return { value: "", isValid: false};
+    return { value: "", isValid: false };
   };
 
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
@@ -35,7 +35,7 @@ const Login = (props) => {
 
   const [formIsValid, setFormIsValid] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [errorMsg,setErrorMsg]=useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false);
@@ -45,21 +45,21 @@ const Login = (props) => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
-        localStorage.setItem('isLoggedIn', '1');
-        localStorage.setItem('username', user.displayName);
+        localStorage.setItem("isLoggedIn", "1");
+        localStorage.setItem("username", user.displayName);
         setShowError(false);
         props.login();
       })
       .catch((error) => {
-      if (error.code === 'auth/popup-closed-by-user') {
-        setShowError(true);
-        setErrorMsg('Sign-in popup was closed. Please try again.');
-      } else {
-        setShowError(true);
-        console.error(error);
-        setErrorMsg('An error occurred, please try again later');
-      }
-    })
+        if (error.code === "auth/popup-closed-by-user") {
+          setShowError(true);
+          setErrorMsg("Sign-in popup was closed. Please try again.");
+        } else {
+          setShowError(true);
+          console.error(error);
+          setErrorMsg("An error occurred, please try again later");
+        }
+      })
       .finally(() => {
         setIsGoogleSignInLoading(false);
       });
@@ -96,7 +96,6 @@ const Login = (props) => {
           // console.log(localStorage.getItem("username"));
           setShowError(false);
           props.login();
-          
         })
         .catch((error) => {
           setShowError(true);
@@ -125,8 +124,6 @@ const Login = (props) => {
       );
     }
   };
-  
- 
 
   return (
     <>
@@ -153,25 +150,23 @@ const Login = (props) => {
 
         {showError && <p className={classes.error}>{errorMsg}</p>}
         <div className={classes.buttonCont}>
-          <button className={classes.button} onClick={googleSignIn}disabled={isGoogleSignInLoading}>
-          Sign in with Google
-          </button>
-  <button className={classes.button}>{props.type}</button>
-  {localStorage.getItem("isLoggedIn") === "1" && (
-    <div>
-      <p className={classes.username}>
-        Welcome, {localStorage.getItem("username")}!
-      </p>
-      <p>isLoggedIn value: {localStorage.getItem("isLoggedIn")}</p>
-      <p>username value: {localStorage.getItem("username")}</p>
-    </div>
-  )}
-</div>
+          <div>
+            {/* {tried to add google img} */}
+            {/* <span className={classes.googleImg}></span> */}
+            <button
+              className={classes.googleButton}
+              onClick={googleSignIn}
+              disabled={isGoogleSignInLoading}
+            >
+              Sign in with Google
+            </button>
+          </div>
 
+          <button className={classes.button}>{props.type}</button>
+        </div>
       </form>
     </>
   );
-  
 };
 
 export default Login;

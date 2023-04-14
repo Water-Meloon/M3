@@ -54,9 +54,7 @@ const SignUp = (props) => {
               value={regPassword}
             ></input>
           </div>
-          {regError && (
-            <p className={classes.error}>{regError}</p>
-          )}
+          {regError && <p className={classes.error}>{regError}</p>}
           <div className={classes.buttonCont}>
             <button className={classes.button}>Sign Up</button>
           </div>
