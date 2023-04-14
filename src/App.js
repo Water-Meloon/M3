@@ -95,26 +95,6 @@ function App() {
           </Routes>
           {isLoggedIn && <div className={classes.username}>{localStorage.getItem("username")}</div>}
           {isLoggedIn && <Logout logout={logoutHandler} />}
-
-          {/* {pageName === "Home" && (
-            <Home isLoggedIn={isLoggedIn} login={loginHandler} />
-          )}
-          
-          {pageName === "My To Do List" && data && (
-            <MyToDoList tasks={data} deleteHandler={deleteTask} />
-          )}
-          {pageName === "Create New Task" && (
-            <CreateNewTask addTask={addTaskHandler} />
-          )}
-          {pageName === "View Task Detail" && <ViewTaskDetail />}
-          {pageName === "Sign Up" && (
-            <SignUp
-              isLoggedIn={isLoggedIn}
-              login={loginHandler}
-              changePage={pageChangeHandler}
-            />
-          )}
-          {isLoggedIn && <div>{localStorage.getItem("username")}</div>} */}
           
         </Card>
         <Footer />
