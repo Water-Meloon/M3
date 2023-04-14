@@ -24,6 +24,10 @@
 
 
 }
+
+.task:hover {
+    scale: 1.15;
+}
 .delete {
     width: 30px;
     height: 30px;
