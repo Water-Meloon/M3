@@ -13,9 +13,9 @@ import Footer from "./components/UI/Footer";
 //import Login from "./components/Home/Login";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import axios from "axios";
-import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 
-if (process.env.NODE_ENV === 'production') disableReactDevTools();
+
+
 
 function App() {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -53,7 +53,7 @@ function App() {
       }
     };
     fetchTasks();
-  }, [userId]);
+  }, [userId],API_BASE_URL);
 
   // console.log(ctx.currentPage);
   // console.log(pageName);

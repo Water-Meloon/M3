@@ -21,7 +21,7 @@ function CreateNewTask(props) {
       ...prevFormData,
       userId: props.userId,
     }));
-  }, [props.userId]);
+  }, [props.userId,API_BASE_URL]);
   console.log("User ID set in formData:", props.userId);
 
   const handleFormChange = (event) => {

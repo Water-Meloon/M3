@@ -13,7 +13,6 @@ function MyToDoList(props) {
     try {
       const userId = localStorage.getItem("userId");
       await axios.delete(`${API_BASE_URL}/api/Tasks/${id}/${userId}`);
-      // Update the tasks state after successful deletion
       props.deleteHandler(id);
     } catch (error) {
       console.error('Error deleting task:', error);
