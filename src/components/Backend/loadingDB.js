@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { MongoClient, ObjectId } = require('mongodb'); // Import ObjectId
+const { MongoClient, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://WaterMelon:Cyber2019@milestone3.pv6y8yo.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -19,12 +19,16 @@ const loadDB = async (userId) => {
       if (operation === 'CREATE') {
       } else if (operation === 'INSERT') {
         const parsedData = JSON.parse(data);
-        parsedData.userId=userId; 
-        const taskId = new ObjectId(parsedData._id);
-        const existingTask = await collection.findOne({ _id: taskId });
-        if (!existingTask) {
-          parsedData._id = taskId;
-          await collection.insertOne(parsedData);
+
+        if (parsedData.userId === userId) {
+          const taskId = new ObjectId(parsedData._id);
+
+          const existingTask = await collection.findOne({ _id: taskId });
+
+          if (!existingTask) {
+            parsedData._id = taskId;
+            await collection.insertOne(parsedData);
+          }
         }
       } else if (operation === 'DELETE') {
         await collection.deleteMany({});
@@ -36,6 +40,5 @@ const loadDB = async (userId) => {
     await client.close();
   }
 };
-
 
 module.exports = loadDB;

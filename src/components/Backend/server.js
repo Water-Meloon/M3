@@ -32,12 +32,20 @@ app.get("/api/Tasks/user/:userId", async (req, res) => {
     const db = client.db("Test");
     const tasksCollection = db.collection("Tasks");
     const tasks = await tasksCollection.find({ userId: userId}).toArray();
-    res.status(200).json(tasks);
+
+    if (tasks.length === 0) {
+      await loadDB(userId);
+      const defaultTasks = await tasksCollection.find({ userId: userId}).toArray();
+      res.status(200).json(defaultTasks);
+    } else {
+      res.status(200).json(tasks);
+    }
   } catch (error) {
     console.error('Error Fetching Tasks:', error);
     res.status(500).json({ message: "Error fetching tasks" });
   }
 });
+
 
 
 app.post("/api/Tasks", async (req, res) => {
@@ -99,22 +107,10 @@ app.delete("/api/Tasks/:id/:userId", async (req, res) => {
   }
 });
 
-app.post("/api/reloadDB", async (req, res) => {
-  const { userId } = req.body;
-  try {
-    await loadDB(userId);
-    res.status(200).json({ message: "Database reloaded successfully" });
-  } catch (error) {
-    console.error("Error reloading DB:", error);
-    res.status(500).json({ message: "Error reloading database" });
-  }
-});
-
 
 
 app.listen(port, async () => {
   try {
-    await loadDB();
     console.log(`Server running on port ${port}`);
   } catch (error) {
     console.error('Error initializing database:', error);

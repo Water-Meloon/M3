@@ -20,19 +20,19 @@ import axios from "axios";
 function App() {
   const [pageName, setPageName] = useState("Home");
   const [userId, setUserId] = useState(localStorage.getItem("userId") ||"");
+  const [logoutTimer, setLogoutTimer] = useState(null);
+
 
   const [data, setData] = useState([]);
-  const reloadDB = async () => {
-    try {
-      await axios.post("http://localhost:3001/api/reloadDB",{userId:userId});
-    } catch (error) {
-      console.error("Error reloading database");
-    }
-  };
+
   
   const pageChangeHandler = (name) => {
     setPageName(name);
   };
+  const updateLastActivity = () => {
+    localStorage.setItem("lastActivity", Date.now().toString());
+  };
+  
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -64,15 +64,27 @@ function App() {
     setIsLoggedIn(false);
     setUserId(null);
     setData([]);
+    if (logoutTimer) {
+      clearTimeout(logoutTimer);
+    }
   };
+  
 
 
-const loginHandler = async (userId) => {
-  setIsLoggedIn(true);
-  setUserId(userId);
-  console.log('Updated userId:', userId);
-  await reloadDB();
-};
+  const loginHandler = async (userId) => {
+    setIsLoggedIn(true);
+    setUserId(userId);
+    updateLastActivity();
+    console.log('Updated userId:', userId);
+    if (logoutTimer) {
+      clearTimeout(logoutTimer);
+    }
+    const newTimer = setTimeout(() => {
+      logoutHandler();
+    }, 1000 * 60 * 0.5);
+    setLogoutTimer(newTimer);
+  };
+  
 
 
   const deleteTask = (id) => {
