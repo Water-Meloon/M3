@@ -1,14 +1,15 @@
-// import Login from "../Home/Login";
 import { useState } from "react";
 import classes from "./SignUp.module.css";
 import { auth } from "../../firebase-config.js";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = (props) => {
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
   const [regError, setRegError] = useState("");
 
+  const navigate = useNavigate();
   const registerHandler = async (event) => {
     event.preventDefault();
     try {
@@ -18,18 +19,16 @@ const SignUp = (props) => {
         regPassword
       );
       if (result.user) {
-        props.login();
-        props.changePage("Home");
+        localStorage.setItem("isLoggedIn", "1");
+        localStorage.setItem("username", result.user.email); 
+        localStorage.setItem("userId", result.user.uid);
+        props.login(result.user.uid);
+        navigate("/");
       }
     } catch (error) {
       setRegError(error.message);
     }
   };
-
-  // const loginHandler = () => {
-  //   props.login();
-  //   props.changePage("Home");
-  // };
 
   return (
     <>

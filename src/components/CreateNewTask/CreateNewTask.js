@@ -1,37 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./CreateNewTask.module.css";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 
 function CreateNewTask(props) {
   const [formData, setFormData] = useState({
-    id: Math.random(),
+    id: Math.ceil(Math.random()*10),
     taskName: "",
     category: "urgent",
     dueDate: "",
     status: "pending",
     location: "",
     description: "",
+    userId: props.userId,
   });
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      userId: props.userId,
+    }));
+  }, [props.userId]);
+  console.log("User ID set in formData:", props.userId);
 
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
     console.log(formData);
   };
+  const navigate = useNavigate();
+  const [shouldNavigate, setShouldNavigate] = useState(false);
 
-  const submitHandler = (event) => {
+  useEffect(() => {
+    if (shouldNavigate) {
+      navigate("/MyToDoList");
+    }
+  }, [shouldNavigate, navigate]);
+
+  const submitHandler = async (event) => {
     event.preventDefault();
-    props.addTask(formData);
-    setFormData({
-      id: Math.random(),
-      taskName: "",
-      category: "urgent",
-      dueDate: "",
-      status: "pending",
-      location: "",
-      description: "",
-    });
-  };
 
+    try {
+      console.log(formData);
+      const response = await axios.post('http://localhost:3001/api/Tasks', formData);
+      // Call the addTask function with the response data to update the tasks state
+      props.addTask(response.data);
+      console.log(response.data);
+      setFormData({
+        id:Math.ceil(Math.random()*10),
+        taskName: "",
+        category: "urgent",
+        dueDate: "",
+        status: "pending",
+        location: "",
+        description: "",
+        userId: props.userId,
+      });
+      setShouldNavigate(true);
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
+  };
+  if (!props.userId || props.isLoggedIn) {
+    return <div>Please log in to create a task.</div>;
+  }
   return (
     <section className={classes.wrapper}>
       <h1>Create New Task</h1>

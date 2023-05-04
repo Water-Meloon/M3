@@ -47,8 +47,9 @@ const Login = (props) => {
         const user = result.user;
         localStorage.setItem("isLoggedIn", "1");
         localStorage.setItem("username", user.displayName);
+        localStorage.setItem("userId", user.uid);
         setShowError(false);
-        props.login();
+        props.login(user.uid);
       })
       .catch((error) => {
         if (error.code === "auth/popup-closed-by-user") {
@@ -89,13 +90,13 @@ const Login = (props) => {
     event.preventDefault();
     if (formIsValid) {
       signInWithEmailAndPassword(auth, userNameState.value, passwordState.value)
-        .then(() => {
+        .then((userCredential) => {
+          const user = userCredential.user;
           localStorage.setItem("isLoggedIn", "1");
-          //console.log(localStorage.getItem("isLoggedIn"))
-          localStorage.setItem("username", userNameState.value);
-          // console.log(localStorage.getItem("username"));
+          localStorage.setItem("username", user.email);
+          localStorage.setItem("userId", user.uid);
           setShowError(false);
-          props.login();
+          props.login(user.uid);
         })
         .catch((error) => {
           setShowError(true);

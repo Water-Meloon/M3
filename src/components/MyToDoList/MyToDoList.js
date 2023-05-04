@@ -1,17 +1,29 @@
 import React from "react";
 import classes from './MyToDoList.module.css';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
+// import { Link, useNavigate } from "react-router-dom";
 
 function MyToDoList(props) {
-  // const [tasks, setTasks] = useState([
-  //   { id: 1, name: "Task 1", category: "urgent", dueDate: "2023-04-05", status: "pending", location: "Home", description: "Task Description" },
-  //   { id: 2, name: "Task 2", category: "urgent", dueDate: "2023-04-06", status: "pending", location: "Office", description: "Task Description" },
-  //   { id: 3, name: "Task 3", category: "Not Urgent", dueDate: "2023-04-07", status: "pending", location: "Gym", description: "Task Description" }
-  // ]);
+  const deleteTask = async (id) => {
 
-  const deleteTask = (id) => {
-    // setTasks(props.data.filter((task) => task.id !== id));
-    props.deleteHandler(id);
+    console.log('Deleting task with id:', id);
+    try {
+      const userId = localStorage.getItem("userId");
+      await axios.delete(`http://localhost:3001/api/Tasks/${id}/${userId}`);
+      // Update the tasks state after successful deletion
+      props.deleteHandler(id);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
+  const navigate = useNavigate();
+
+  function handleClick() {
+    navigate("/viewtaskdetail");
+  }
+
 
   return (
     <>
@@ -24,12 +36,13 @@ function MyToDoList(props) {
               {props.tasks
                 .filter((task) => task.category === "urgent")
                 .map((task) => (
-                  <div className={classes.task} key={task.id}>
+                  <div className={classes.task} key={task._id}>
                     <h3>{task.name}</h3>
                     <span>{task.description}</span>
                     <span>Due: {task.dueDate}</span>
                     <span>Location: {task.location}</span>
-                    <button className={classes.delete} onClick={() => deleteTask(task.id)}>X</button>
+                    <button className={classes.delete} onClick={() => deleteTask(task._id)}>X</button>
+                    <button onClick={() => {props.onSelectTask(task._id);handleClick();}}>View Task Detail</button>
                   </div>
                 ))}
             </div>
@@ -38,12 +51,13 @@ function MyToDoList(props) {
               {props.tasks
                 .filter((task) => task.category === "Not Urgent")
                 .map((task) => (
-                  <div className={classes.task} key={task.id}>
+                  <div className={classes.task} key={task._id}>
                     <h3>{task.name}</h3>
                     <span>{task.description}</span>
                     <span>Due: {task.dueDate}</span>
                     <span>Location: {task.location}</span>
-                    <button className={classes.delete} onClick={() => deleteTask(task.id)}>X</button>
+                    <button className={classes.delete} onClick={() => deleteTask(task._id)}>X</button>
+                    <button onClick={() => {props.onSelectTask(task._id);handleClick();}}>View Task Detail</button>
                   </div>
                 ))}
             </div>

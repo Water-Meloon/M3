@@ -1,8 +1,8 @@
 import classes from "./Home.module.css";
 import Login from "./Login";
 const Home = (props) => {
-    const loginHandler = () => {
-        props.login();
+    const loginHandler = (userId) => {
+        props.login(userId);
     }
   return (
     <>

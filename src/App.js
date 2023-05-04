@@ -10,20 +10,18 @@ import ViewTaskDetail from "./components/ViewTaskDetail/ViewTaskDetail";
 import Card from "./components/UI/Card";
 import Logout from "./components/UI/Logout";
 import Footer from "./components/UI/Footer";
+//import Login from "./components/Home/Login";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import axios from "axios";
+import { disableReactDevTools } from "@fvilers/disable-react-devtools";
+
+if (process.env.NODE_ENV === 'production') disableReactDevTools();
 
 function App() {
   const [pageName, setPageName] = useState("Home");
-  //   const ctx = useContext(PageContext);
+  const [userId, setUserId] = useState(localStorage.getItem("userId") ||"");
 
-  const [data, setData] = useState();
-
-  useEffect(() => {
-    fetch("./tasks.json")
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error(error));
-  }, []);
+  const [data, setData] = useState([]);
 
   const pageChangeHandler = (name) => {
     setPageName(name);
@@ -32,26 +30,44 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const loginInfo = localStorage.getItem("isLoggedIn");
-
+    const storedUserId = localStorage.getItem("userId");
     if (loginInfo === "1") {
       setIsLoggedIn(true);
+      setUserId(storedUserId);
     }
   }, []);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      if (userId) {
+        const response = await axios.get(`http://localhost:3001/api/Tasks/user/${userId}`);
+        setData(response.data);
+      }
+    };
+    fetchTasks();
+  }, [userId]);
 
   // console.log(ctx.currentPage);
   // console.log(pageName);
 
   const logoutHandler = () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     setIsLoggedIn(false);
+    setUserId(null);
+    setData([]);
   };
 
-  const loginHandler = () => {
+
+  const loginHandler = (userId) => {
     setIsLoggedIn(true);
+    setUserId(userId);
+    console.log('Updated userId:', userId);
   };
 
   const deleteTask = (id) => {
-    setData(data.filter((task) => task.id !== id));
+    setData(data.filter((task) => task._id!== id));
   };
 
   const addTaskHandler = (formData) => {
@@ -59,6 +75,16 @@ function App() {
       return [formData, ...prevData];
     });
   };
+
+  const [selectedTask, setSelectedTask] = useState(null);
+const selectTaskHandler = (taskId) => {
+  if (isLoggedIn) {
+    const task = data.find((task) => task._id === taskId);
+    setSelectedTask(task);
+  } else {
+    setSelectedTask(null);
+  }
+};
 
   console.log(localStorage.getItem("isLoggedIn"));
   return (
@@ -73,15 +99,31 @@ function App() {
               exact
               element={<Home isLoggedIn={isLoggedIn} login={loginHandler} />}
             />
+            {/* <Route
+              path="/login"
+              element={
+                <Login
+                  isLoggedIn={isLoggedIn}
+                  login={loginHandler}
+                  changePage={pageChangeHandler}
+                  userId={userId}
+            />}
+            /> */}
             <Route
               path="/mytodolist"
-              element={<MyToDoList tasks={data} deleteHandler={deleteTask} />}
+              element={
+                data ? (
+                  <MyToDoList tasks={data} deleteHandler={deleteTask} onSelectTask={selectTaskHandler} />
+                ) : (
+                  <p>Loading tasks...</p>
+                )
+              }
             />
             <Route
               path="/createnewtask"
-              element={<CreateNewTask addTask={addTaskHandler} />}
+              element={<CreateNewTask userId={userId} addTask={addTaskHandler}/>}
             />
-            <Route path="/viewtaskdetail" element={<ViewTaskDetail />} />
+            <Route path="/viewtaskdetail" element={<ViewTaskDetail task={selectedTask} isLoggedIn={isLoggedIn}/>} />
             <Route
               path="/signup"
               element={
