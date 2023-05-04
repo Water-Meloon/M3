@@ -18,14 +18,13 @@ import axios from "axios";
 
 
 function App() {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [pageName, setPageName] = useState("Home");
   const [userId, setUserId] = useState(localStorage.getItem("userId") ||"");
 
   const [data, setData] = useState([]);
   const reloadDB = async () => {
     try {
-      await axios.post(`${API_BASE_URL}/api/reloadDB`,{userId:userId});
+      await axios.post("https://watermelon-ewlo.onrender.com/api/reloadDB",{userId:userId});
     } catch (error) {
       console.error("Error reloading database");
     }
@@ -48,12 +47,12 @@ function App() {
   useEffect(() => {
     const fetchTasks = async () => {
       if (userId) {
-        const response = await axios.get(`${API_BASE_URL}/api/Tasks/user/${userId}`);
+        const response = await axios.get(`https://watermelon-ewlo.onrender.com/api/Tasks/user/${userId}`);
         setData(response.data);
       }
     };
     fetchTasks();
-  }, [userId],API_BASE_URL);
+  }, [userId]);
 
   // console.log(ctx.currentPage);
   // console.log(pageName);

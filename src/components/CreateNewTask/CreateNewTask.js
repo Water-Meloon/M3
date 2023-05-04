@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 
 function CreateNewTask(props) {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [formData, setFormData] = useState({
     id: Math.ceil(Math.random()*10),
     taskName: "",
@@ -21,7 +20,7 @@ function CreateNewTask(props) {
       ...prevFormData,
       userId: props.userId,
     }));
-  }, [props.userId,API_BASE_URL]);
+  }, [props.userId]);
   console.log("User ID set in formData:", props.userId);
 
   const handleFormChange = (event) => {
@@ -43,7 +42,7 @@ function CreateNewTask(props) {
 
     try {
       console.log(formData);
-      const response = await axios.post(`${API_BASE_URL}/api/Tasks`, formData);
+      const response = await axios.post("https://watermelon-ewlo.onrender.com/api/Tasks", formData);
       // Call the addTask function with the response data to update the tasks state
       props.addTask(response.data);
       console.log(response.data);

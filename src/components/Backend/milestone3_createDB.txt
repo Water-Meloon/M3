@@ -1,9 +1,0 @@
-CREATE|Tasks
-
-INSERT|Tasks|{"_id": "6452f41f6cf3ff7d51a5b7b5", "id": 9, "taskName": "Task1", "category": "urgent", "dueDate": "2023-05-20", "status": "pending", "location": "whatever", "description": "Task1", "userId": "diAfVAQJPYcHKBn47MM9tsPs5go1"}
-
-INSERT|Tasks|{"_id": "6452f4516cf3ff7d51a5b7b7", "id": 10, "taskName": "good", "category": "Not Urgent", "dueDate": "2023-05-20", "status": "pending", "location": "iiiiii", "description": "Task2", "userId": "diAfVAQJPYcHKBn47MM9tsPs5go1"}
-
-INSERT|Tasks|{"_id": "6452f61e6cf3ff7d51a5b7b9", "id": 7, "taskName": "bad", "category": "urgent", "dueDate": "2023-05-20", "status": "pending", "location": "whatever", "description": "testing", "userId": "wu6nVHukJnPbjdcChSgwRmZHpUE3"}
-
-INSERT|Tasks|{"_id": "6452f6336cf3ff7d51a5b7ba", "id": 10, "taskName": "normal", "category": "Not Urgent", "dueDate": "2023-05-20", "status": "pending", "location": "whatever", "description": "testing2", "userId": "wu6nVHukJnPbjdcChSgwRmZHpUE3"}
