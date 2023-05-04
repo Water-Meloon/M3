@@ -47,5 +47,5 @@
   "devDependencies": {
     "concurrently": "^8.0.1"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "https://milestone-3.onrender.com"
 }
