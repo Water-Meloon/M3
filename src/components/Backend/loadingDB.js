@@ -10,16 +10,21 @@ const loadDB = async () => {
     const fileContent = fs.readFileSync('src/components/Backend/milestone3_createDB.txt', 'utf-8');
     const commands = fileContent.split('\n').filter(cmd => cmd.trim() !== '');
 
+    const db = client.db("Test");
+
     for (const command of commands) {
       const [operation, collectionName, data] = command.split('|');
-      const db = client.db("Test");
       const collection = db.collection(collectionName);
 
       if (operation === 'CREATE') {
       } else if (operation === 'INSERT') {
         const parsedData = JSON.parse(data);
-        parsedData._id = new ObjectId(parsedData._id);
-        await collection.insertOne(parsedData);
+        const taskId = new ObjectId(parsedData._id);
+        const existingTask = await collection.findOne({ _id: taskId });
+        if (!existingTask) {
+          parsedData._id = taskId;
+          await collection.insertOne(parsedData);
+        }
       } else if (operation === 'DELETE') {
         await collection.deleteMany({});
       }
@@ -30,5 +35,6 @@ const loadDB = async () => {
     await client.close();
   }
 };
+
 
 module.exports = loadDB;
