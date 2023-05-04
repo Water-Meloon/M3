@@ -7,7 +7,7 @@ const loadDB = async (userId) => {
   try {
     await client.connect();
 
-    const fileContent = fs.readFileSync('./Backend/milestone3_createDB.txt', 'utf-8');
+    const fileContent = fs.readFileSync('src/components/Backend/milestone3_createDB.txt', 'utf-8');
     const commands = fileContent.split('\n').filter(cmd => cmd.trim() !== '');
 
     const db = client.db("Test");
