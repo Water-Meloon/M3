@@ -99,6 +99,19 @@ app.delete("/api/Tasks/:id/:userId", async (req, res) => {
   }
 });
 
+app.post("/api/reloadDB", async (req, res) => {
+  const { userId } = req.body;
+  try {
+    await loadDB(userId);
+    res.status(200).json({ message: "Database reloaded successfully" });
+  } catch (error) {
+    console.error("Error reloading DB:", error);
+    res.status(500).json({ message: "Error reloading database" });
+  }
+});
+
+
+
 app.listen(port, async () => {
   try {
     await loadDB();

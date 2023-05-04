@@ -18,11 +18,19 @@ import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 if (process.env.NODE_ENV === 'production') disableReactDevTools();
 
 function App() {
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [pageName, setPageName] = useState("Home");
   const [userId, setUserId] = useState(localStorage.getItem("userId") ||"");
 
   const [data, setData] = useState([]);
-
+  const reloadDB = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/api/reloadDB`,{userId:userId});
+    } catch (error) {
+      console.error("Error reloading database");
+    }
+  };
+  
   const pageChangeHandler = (name) => {
     setPageName(name);
   };
@@ -40,7 +48,7 @@ function App() {
   useEffect(() => {
     const fetchTasks = async () => {
       if (userId) {
-        const response = await axios.get(`http://localhost:3001/api/Tasks/user/${userId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/Tasks/user/${userId}`);
         setData(response.data);
       }
     };
@@ -60,11 +68,13 @@ function App() {
   };
 
 
-  const loginHandler = (userId) => {
-    setIsLoggedIn(true);
-    setUserId(userId);
-    console.log('Updated userId:', userId);
-  };
+const loginHandler = async (userId) => {
+  setIsLoggedIn(true);
+  setUserId(userId);
+  console.log('Updated userId:', userId);
+  await reloadDB();
+};
+
 
   const deleteTask = (id) => {
     setData(data.filter((task) => task._id!== id));
@@ -85,6 +95,9 @@ const selectTaskHandler = (taskId) => {
     setSelectedTask(null);
   }
 };
+
+
+
 
   console.log(localStorage.getItem("isLoggedIn"));
   return (

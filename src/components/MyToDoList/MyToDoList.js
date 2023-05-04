@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 // import { Link, useNavigate } from "react-router-dom";
 
 function MyToDoList(props) {
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const deleteTask = async (id) => {
 
     console.log('Deleting task with id:', id);
     try {
       const userId = localStorage.getItem("userId");
-      await axios.delete(`http://localhost:3001/api/Tasks/${id}/${userId}`);
+      await axios.delete(`${API_BASE_URL}/api/Tasks/${id}/${userId}`);
       // Update the tasks state after successful deletion
       props.deleteHandler(id);
     } catch (error) {
