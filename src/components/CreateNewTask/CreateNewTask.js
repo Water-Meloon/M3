@@ -42,7 +42,7 @@ function CreateNewTask(props) {
 
     try {
       console.log(formData);
-      const response = await axios.post("https://watermelon-ewlo.onrender.com/api/Tasks", formData);
+      const response = await axios.post("http://localhost:3001/api/Tasks", formData);
       // Call the addTask function with the response data to update the tasks state
       props.addTask(response.data);
       console.log(response.data);

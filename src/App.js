@@ -24,7 +24,7 @@ function App() {
   const [data, setData] = useState([]);
   const reloadDB = async () => {
     try {
-      await axios.post("https://watermelon-ewlo.onrender.com/api/reloadDB",{userId:userId});
+      await axios.post("http://localhost:3001/api/reloadDB",{userId:userId});
     } catch (error) {
       console.error("Error reloading database");
     }
@@ -47,7 +47,7 @@ function App() {
   useEffect(() => {
     const fetchTasks = async () => {
       if (userId) {
-        const response = await axios.get(`https://watermelon-ewlo.onrender.com/api/Tasks/user/${userId}`);
+        const response = await axios.get(`http://localhost:3001/api/Tasks/user/${userId}`);
         setData(response.data);
       }
     };

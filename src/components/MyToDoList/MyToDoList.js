@@ -11,7 +11,7 @@ function MyToDoList(props) {
     console.log('Deleting task with id:', id);
     try {
       const userId = localStorage.getItem("userId");
-      await axios.delete(`https://watermelon-ewlo.onrender.com/api/Tasks/${id}/${userId}`);
+      await axios.delete(`http://localhost:3001/api/Tasks/${id}/${userId}`);
       props.deleteHandler(id);
     } catch (error) {
       console.error('Error deleting task:', error);
